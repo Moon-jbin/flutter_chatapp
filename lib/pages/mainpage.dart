@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
+
+import 'controllers/bottomnav.dart';
 
 class MainPage extends StatefulWidget {
   @override
@@ -6,6 +10,8 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
+  final BottomNavController _controller = Get.put(BottomNavController());
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -19,20 +25,18 @@ class _MainPageState extends State<MainPage> {
         elevation: 0.5,
       ),
       bottomNavigationBar: BottomNavigationBar(
+        selectedItemColor: Colors.black,
+        showSelectedLabels: false,
+        showUnselectedLabels: false,
         type: BottomNavigationBarType.fixed,
         backgroundColor: Colors.white,
-        items: const [
-          BottomNavigationBarItem(
-            label: '대화',
-            icon: Icon(Icons.library_books)
-          ),
-          BottomNavigationBarItem(
-              label: '아무거나',
-              icon: Icon(Icons.favorite_border)
-          )
-        ],
-
+        currentIndex: _controller.selectedIndex,
+        items: _controller.bottomNavController,
+        onTap: (index) => setState(() {
+          _controller.setSelectedIndex(index);
+        })
       ),
+      body: _controller.pages[_controller.selectedIndex],
     );
   }
 

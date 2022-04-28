@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 
+import '../methods/signdata.dart';
 import 'controllers/bottomnav.dart';
 
 class MainPage extends StatefulWidget {
@@ -23,6 +24,11 @@ class _MainPageState extends State<MainPage> {
         centerTitle: true,
         backgroundColor: Colors.white,
         elevation: 0.5,
+        actions: [
+          IconButton(onPressed: (){
+            SignData().signOut();
+          }, icon: const Icon(Icons.logout_outlined, color: Colors.black,))
+        ],
       ),
       bottomNavigationBar: BottomNavigationBar(
         selectedItemColor: Colors.black,

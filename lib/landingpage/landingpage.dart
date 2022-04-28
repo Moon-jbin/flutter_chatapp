@@ -2,8 +2,8 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../pages/mainpage.dart';      // Ui 작업으로 인해 불러옴. 나중에 login 으로 다시 바꿔야됨
-// import '../pages/login.dart';
+// import '../pages/mainpage.dart';      // Ui 작업으로 인해 불러옴. 나중에 login 으로 다시 바꿔야됨
+import '../pages/login.dart';
 
 class LandingPage extends StatefulWidget {
   @override
@@ -15,7 +15,7 @@ class _LandingPageState extends State<LandingPage> {
   @override
   void initState() {
     Timer(const Duration(seconds: 0), () {
-      Get.offAll(()=>MainPage());
+      Get.offAll(()=>LoginPage());
     });
     super.initState();
   }

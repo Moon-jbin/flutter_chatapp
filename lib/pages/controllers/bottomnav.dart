@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../components/talkroom.dart';
+import '../profilepage.dart';
 
 class BottomNavController extends GetxController {
   List<BottomNavigationBarItem> get bottomNavController => [
@@ -21,9 +22,16 @@ class BottomNavController extends GetxController {
   }
 
   List pages = [
-    Container(
-      child: const Center(
-        child: Text("프로필 페이지"),
+    Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: const [
+           Text('안녕하세요!'),
+          SizedBox(height: 10),
+          Text('messaGe는 Flutter & firebase로 만든 채팅앱입니다.'),
+          SizedBox(height: 10,),
+          Text('UI 부분에서는 Simple을 추구하듯 구현했습니다. ')
+        ],
       ),
     ),
     Center(

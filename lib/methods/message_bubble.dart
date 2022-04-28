@@ -63,13 +63,16 @@ class MessageBubble extends StatelessWidget {
                   maxWidth: MediaQuery.of(context).size.width * 0.7,
                 ),
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
                       userName,
                       style: const TextStyle(
-                        color: Colors.black
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold
                       ),
                     ),
+                    const SizedBox(height: 3),
                     Text(
                       message,
                       style: const TextStyle(color: Colors.black),

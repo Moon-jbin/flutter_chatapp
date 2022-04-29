@@ -12,13 +12,12 @@ class SignData {
     try {
       await FirebaseAuth.instance.signOut();
       Get.offAll(()=>LoginPage());
-      print("로그아웃");
     }catch(e){
       print(e.toString());
     }
   }
 
-  void checkDisplayName() async{
+  void checkDisplayName() async{  // displayName은 회원가입한 이메일이 나온다.
     await Firebase.initializeApp();
     User? user = FirebaseAuth.instance.currentUser;
     // user?.updateProfile(displayName:_emailController.text);

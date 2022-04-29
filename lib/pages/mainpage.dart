@@ -19,15 +19,15 @@ class _MainPageState extends State<MainPage> {
       appBar: AppBar(
         title: const Text(
           'messaGe',
-          style: TextStyle(color: Colors.black),
+          style: TextStyle(color: Colors.black, fontFamily: "GreatVibes" ,fontSize: 30),
         ),
-        centerTitle: true,
+        // centerTitle: true,
         backgroundColor: Colors.white,
         elevation: 0.5,
         actions: [
-          IconButton(onPressed: (){
+          TextButton(onPressed: (){
             SignData().signOut();
-          }, icon: const Icon(Icons.logout_outlined, color: Colors.black,))
+          }, child: Text('로그아웃', style: TextStyle(color: Colors.red[300]),))
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(

@@ -2,6 +2,11 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
+
+
+// 이쪽 부분은 차후 추가해볼 예정
+// 이를 이용해서 각 계정간의 프로필 사진을 넣어볼 예정이다.
+
 class ImageAdd extends StatefulWidget {
   const ImageAdd( {Key? key}) : super(key: key);
 

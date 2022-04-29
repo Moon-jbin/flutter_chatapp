@@ -13,13 +13,16 @@ class _LoginPageState extends State<LoginPage> {
       appBar: AppBar(
           title: const Text(
             '로그인',
-            style: TextStyle(color: Colors.black),
+            style: TextStyle(color: Colors.black, fontWeight: FontWeight.w200),
           ),
           centerTitle: true,
           backgroundColor: Colors.white,
           elevation: 0.5,
       ),
-      body: InputWrap(),
+      body:Padding(
+        padding: EdgeInsets.fromLTRB(20.0, 0, 20.0, 0) ,
+        child: InputWrap() ,
+      ),
     );
   }
 }

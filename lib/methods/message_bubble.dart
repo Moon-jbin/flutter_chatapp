@@ -9,13 +9,12 @@ class MessageBubble extends StatelessWidget {
       : super(key: key);
 
   final String message;
-
   // 이 message 에게는 message.dart 파일의 chatDocs[index]['text'] 값을 받아온다.
 
   final bool isMe; // 이 값을 사용해 Container에다가 삼항연산자를 활용해
   // 서로간의 색상을 다르게 표현한다.
 
-  final String userName;
+  final String userName; //
 
   @override
   Widget build(BuildContext context) {

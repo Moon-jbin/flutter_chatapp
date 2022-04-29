@@ -17,7 +17,7 @@ class _RegisterInputState extends State<RegisterInput> {
   final TextEditingController _pwController = TextEditingController();
   final TextEditingController _nameController = TextEditingController();
 
-  late String _userName ="";
+  late String _userName = "";
   late String _emailValue = "";
   late String _pwValue = "";
 
@@ -25,98 +25,122 @@ class _RegisterInputState extends State<RegisterInput> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Center(
-        child: Padding(
-          padding: const EdgeInsets.fromLTRB(100.0, 0, 100.0, 0),
-          child: Form(
-            key: _formKey,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                // 유저이름 코드
-                TextFormField(
-                  controller: _nameController,
-                  decoration: const InputDecoration(
-                      hintText: 'name', border: OutlineInputBorder()),
-                  validator: (value) {
-                    if (value!.isEmpty) {
-                      return "이름을 입력하세요";
-                    }
-                    if (value.length < 2) {
-                      return '2자 이상입력해주세요';
-                    }
-                    return null;
-                  },
-                  onChanged: (value){
-                    _userName = value;
-                  },
-                ),
-                const SizedBox(height: 20),
-                // 이메일 입력 코드
-                TextFormField(
-                  controller: _emailController,
-                  decoration: const InputDecoration(
-                      hintText: 'E-mail', border: OutlineInputBorder()),
-                  validator: (value) {
-                    if (value == "") {
-                      return "이메일을 입력하세요";
-                    } else if (!RegExp(
-                            r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$')
-                        .hasMatch(value!)) {
-                      return '잘못된 이메일 형식입니다.';
-                    }
-                  },
-                  onChanged: (value){
-                    _emailValue = value;
-                  },
-                ),
-                const SizedBox(height: 20),
-                // 비밀번호 입력 코드
-                TextFormField(
-                  obscureText: true,
-                  controller: _pwController,
-                  decoration: const InputDecoration(
-                      hintText: 'password', border: OutlineInputBorder()),
-                  validator: (String? value) {
-                    if (value!.isEmpty) {
-                      return "비밀번호를 입력하세요";
-                    }
-                    if (value.length < 6) {
-                      return '6자 이상입력해주세요';
-                    }
-                    return null;
-                  },
-                  onChanged: (value){
-                    _pwValue = value;
-                  },
-                ),
-                const SizedBox(height: 20),
-                // 비밀번호 재입력 코드
-                TextFormField(
-                  obscureText: true,
-                  decoration: const InputDecoration(
-                      hintText: 'password', border: OutlineInputBorder()),
-                  validator: (String? value) {
-                    if (value == _pwController.text) {
+        child: Form(
+          key: _formKey,
+          child: Container(
+            padding: const EdgeInsets.fromLTRB(70.0, 60.0, 70.0, 0.0),
+            height: 450,
+            decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(10),
+                boxShadow: [
+                  BoxShadow(
+                      color: Colors.grey.withOpacity(0.5),
+                      blurRadius: 7,
+                      offset: const Offset(2, 3))
+                ]),
+            constraints: const BoxConstraints(maxWidth: 400),
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  // 유저이름 코드
+                  TextFormField(
+                    controller: _nameController,
+                    decoration: const InputDecoration(
+                      hintText: 'name',
+                    ),
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return "이름을 입력하세요.";
+                      }
+                      if (value.length < 2) {
+                        return '2자 이상입력해주세요.';
+                      }
                       return null;
-                    } else {
-                      return '비밀번호를 다시 입력하세요';
-                    }
-                  },
-                ),
-                const SizedBox(height: 10),
-                ElevatedButton(
-                  onPressed: () {
-                    FirebaseFirestore.instance.collection('users').snapshots();
-                    _register(); // 이때 firestore 에다가 입력한 정보들이 저장되도록 한다.
-
-                  },
-                  child: const Text('확인'),
-                  style: ElevatedButton.styleFrom(
-                    primary: Colors.black,
-                    minimumSize: const Size.fromHeight(55),
+                    },
+                    onChanged: (value) {
+                      _userName = value;
+                    },
                   ),
-                )
-              ],
+
+                  const SizedBox(height: 20),
+                  // 이메일 입력 코드
+
+                  TextFormField(
+                    controller: _emailController,
+                    decoration: const InputDecoration(
+                      hintText: 'E-mail',
+                    ),
+                    validator: (value) {
+                      if (value == "") {
+                        return "이메일을 입력하세요.";
+                      } else if (!RegExp(
+                              r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$')
+                          .hasMatch(value!)) {
+                        return '잘못된 이메일 형식입니다.';
+                      }
+                    },
+                    onChanged: (value) {
+                      _emailValue = value;
+                    },
+                  ),
+
+                  const SizedBox(height: 20),
+                  // 비밀번호 입력 코드
+                  TextFormField(
+                    obscureText: true,
+                    controller: _pwController,
+                    decoration: const InputDecoration(
+                      hintText: 'password',
+                    ),
+                    validator: (String? value) {
+                      if (value!.isEmpty) {
+                        return "비밀번호를 입력하세요.";
+                      }
+                      if (value.length < 6) {
+                        return '6자 이상입력해주세요.';
+                      }
+                      return null;
+                    },
+                    onChanged: (value) {
+                      _pwValue = value;
+                    },
+                  ),
+                  const SizedBox(height: 20),
+                  // 비밀번호 재입력 코드
+                  TextFormField(
+                    obscureText: true,
+                    decoration: const InputDecoration(
+                      hintText: 'password',
+                    ),
+                    validator: (String? value) {
+                      if (value == _pwController.text) {
+                        return null;
+                      } else {
+                        return '비밀번호를 다시 입력하세요.';
+                      }
+                    },
+                  ),
+                  const SizedBox(height: 35),
+                  ElevatedButton(
+                    onPressed: () {
+                      FirebaseFirestore.instance
+                          .collection('users')
+                          .snapshots();
+                      _register(); // 이때 firestore 에다가 입력한 정보들이 저장되도록 한다.
+                    },
+                    child: const Text(
+                      '확인',
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    style: ElevatedButton.styleFrom(
+                      primary: Colors.black,
+                      minimumSize: const Size.fromHeight(55),
+                    ),
+                  )
+                ],
+              ),
             ),
           ),
         ),
@@ -130,17 +154,20 @@ class _RegisterInputState extends State<RegisterInput> {
       if (_formKey.currentState!.validate()) {
         // 이부분이 TextFormField 에 있는 validate 를 검사한다.
 
-        final newUser =  await FirebaseAuth.instance.createUserWithEmailAndPassword(
-            email: _emailController.text, password: _pwController.text);
+        final newUser = await FirebaseAuth.instance
+            .createUserWithEmailAndPassword(
+                email: _emailController.text, password: _pwController.text);
         // 이 코드가 firebase 에다가 이메일, 비밀번호를 넣어주는 역할!
 
-
-        await FirebaseFirestore.instance.collection('users').doc(newUser.user!.uid).set({
-          'userName' : _userName,
-          'email' : _emailValue,
-          'password' : _pwValue
-        });  // 이렇게 해야지 사용자 UID 로 인해서 email 인증 로그인 과 통합된 UID를 가지므로 id를 가질 수 있다.
-
+        await FirebaseFirestore.instance
+            .collection('users')
+            .doc(newUser.user!.uid) // newUser에서 user의 정보중 uid를 doc이름으로 설정시켜준다.
+            .set({
+          // 필드값을 넣어준다.
+          'userName': _userName,
+          'email': _emailValue,
+          'password': _pwValue
+        }); // 이렇게 해야지 사용자 UID 로 인해서 email 인증 로그인 과 통합된 UID를 가지므로 id를 가질 수 있다.
 
         Get.snackbar('회원가입 완료', '가입이 완료되었습니다.');
 

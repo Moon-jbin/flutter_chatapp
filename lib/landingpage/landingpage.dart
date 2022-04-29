@@ -6,6 +6,8 @@ import 'package:get/get.dart';
 import '../pages/login.dart';
 
 class LandingPage extends StatefulWidget {
+  const LandingPage({Key? key}) : super(key: key);
+
   @override
   _LandingPageState createState() => _LandingPageState();
 }
@@ -14,23 +16,23 @@ class _LandingPageState extends State<LandingPage> {
 
   @override
   void initState() {
-    Timer(const Duration(seconds: 0), () {
+    Timer(const Duration(seconds: 1), () {
       Get.offAll(()=>LoginPage());
     });
     super.initState();
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: Container(
-      width: MediaQuery.of(context).size.width,
-      height: MediaQuery.of(context).size.height,
-      child: Image.asset(
-        'assets/image/landing_image.jpg',
-        fit: BoxFit.cover,
-      ),
-    ));
+        backgroundColor: Colors.white,
+        body: SizedBox(
+          width: MediaQuery.of(context).size.width,
+          height: MediaQuery.of(context).size.height,
+          child: Image.asset(
+            'assets/image/landing_image.jpg',
+            // fit: BoxFit.cover,
+          ),
+        ));
   }
 }

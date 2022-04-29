@@ -16,7 +16,7 @@ class Message extends StatelessWidget {
       // 메시지를 실시간으로 구독해야 하기 때문에 stream 으로 한다.
       stream: FirebaseFirestore.instance
           .collection('talk')
-          .orderBy('time', descending: true)
+          .orderBy('time', descending: true)   // 이 부분으로 인해 time 스탬프 데이터를 가지고 정렬을 해준다.
           .snapshots(),
       // 컬렉션 talk에 있는 문서를 가져온다.
       // snapshots 전에 있는 orderBy 함수는 타임 스탬프를 받아서 정렬을 해주는 역할을 한다.

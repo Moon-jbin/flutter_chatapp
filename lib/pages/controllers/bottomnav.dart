@@ -1,7 +1,11 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../components/talkroom.dart';
+
+import '../components/messagelistpage.dart';
+import '../components/searchpage.dart';
+
 // import '../profilepage.dart';
 
 class BottomNavController extends GetxController {
@@ -10,6 +14,10 @@ class BottomNavController extends GetxController {
             label: '소개',
             icon: Icon(Icons.person_outline),
             activeIcon: Icon(Icons.person)),
+    const BottomNavigationBarItem(
+        label: '친구찾기',
+        icon: Icon(Icons.add_box_outlined),
+        activeIcon: Icon(Icons.add_box_rounded)),
         const BottomNavigationBarItem(
             label: '대화방 입장',
             icon: Icon(Icons.chat_bubble_outline),
@@ -28,32 +36,24 @@ class BottomNavController extends GetxController {
     Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
-        children: const [
+        children: [
           Text('안녕하세요!'),
           SizedBox(height: 10),
           Text('messaGe는 Flutter & Firebase로 만든 채팅앱입니다.'),
+          StreamBuilder(
+              stream: FirebaseAuth.instance.authStateChanges(),
+              builder: (BuildContext context, AsyncSnapshot<User?> snapshot) {
+                if (snapshot.hasData) {
+                  return Text("환영합니다.");
+                } else {
+                  return Text('${FirebaseAuth.instance.currentUser?.uid}');
+                }
+              }),
         ],
       ),
-    ),
-    Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          const Text('자유롭게 대화를 나눠보세요!'),
-          const SizedBox(height: 20),
-          OutlinedButton(
-            onPressed: () async {
-              Get.to(
-                () => TalkRoom(),
-              );
-            },
-            child: const Text('들어가기', style: TextStyle(fontWeight: FontWeight.bold),),
-            style: OutlinedButton.styleFrom(
-              primary: Colors.black,
-            ),
-          ),
-        ],
       ),
-    )
+    Container( child: SearchPage(), ),
+    // Center(child: SearchPage()),
+    Center(child: const Text('hi'))
   ];
 }

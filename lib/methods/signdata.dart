@@ -23,4 +23,6 @@ class SignData {
     // user?.updateProfile(displayName:_emailController.text);
     print(user?.displayName);
   }
+
+
 }

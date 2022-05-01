@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
@@ -95,8 +96,9 @@ class _InputWrapState extends State<InputWrap> {
                     ),
                   ),
                   const SizedBox(height: 10),
-                  ElevatedButton(onPressed: signInWithGoogle
-                  , child:Text('Google 로그인'))
+                  ElevatedButton(
+                      onPressed: signInWithGoogle,
+                      child: const Text('google 로그인'))
                 ],
               ),
             ),
@@ -126,14 +128,38 @@ class _InputWrapState extends State<InputWrap> {
     }
   }
 
-
-   Future<UserCredential> signInWithGoogle () async{
+  Future<UserCredential> signInWithGoogle() async {
+    // Trigger the authentication flow
     final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
-    final GoogleSignInAuthentication? googleAuth = await googleUser?.authentication;
-    final OAuthCredential credential = GoogleAuthProvider.credential(
+
+    // Obtain the auth details from the request
+    final GoogleSignInAuthentication? googleAuth =
+        await googleUser?.authentication;
+
+    // Create a new credential
+    final credential = GoogleAuthProvider.credential(
       accessToken: googleAuth?.accessToken,
       idToken: googleAuth?.idToken,
     );
-    return await FirebaseAuth.instance.signInWithCredential(credential);
+
+    final authResult = await FirebaseAuth.instance.signInWithCredential(credential);
+    final user = authResult.user;
+
+
+
+    await FirebaseFirestore.instance
+        .collection('users')
+        .doc(FirebaseAuth.instance.currentUser?.uid) // newUser에서 user의 정보중 uid를 doc이름으로 설정시켜준다.
+        .set({
+      // 필드값을 넣어준다.
+      'userName': user!.displayName,
+      'email': user.email,
+    });
+
+
+    // Once signed in, return the UserCredential
+    Get.offAll(()=> MainPage() );
+
+    return authResult;  // 리턴 값을 활성화 하기 위해 불러낸다.
   }
 }

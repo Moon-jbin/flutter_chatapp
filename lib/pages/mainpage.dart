@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
@@ -6,6 +7,8 @@ import '../methods/signdata.dart';
 import 'controllers/bottomnav.dart';
 
 class MainPage extends StatefulWidget {
+   MainPage({Key? key}) : super(key: key);
+
   @override
   _MainPageState createState() => _MainPageState();
 }
@@ -27,6 +30,7 @@ class _MainPageState extends State<MainPage> {
         actions: [
           TextButton(onPressed: (){
             SignData().signOut();
+            FirebaseAuth.instance.signOut();
           }, child: Text('로그아웃', style: TextStyle(color: Colors.red[300]),))
         ],
       ),
@@ -42,7 +46,10 @@ class _MainPageState extends State<MainPage> {
           _controller.setSelectedIndex(index);
         })
       ),
-      body: _controller.pages[_controller.selectedIndex],
+      body: Container(
+        child: _controller.pages[_controller.selectedIndex],
+      )
+
     );
   }
 

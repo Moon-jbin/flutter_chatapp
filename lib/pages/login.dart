@@ -19,7 +19,7 @@ class _LoginPageState extends State<LoginPage> {
           backgroundColor: Colors.white,
           elevation: 0.5,
       ),
-      body:Padding(
+      body: const Padding(
         padding: EdgeInsets.fromLTRB(20.0, 0, 20.0, 0) ,
         child: InputWrap() ,
       ),

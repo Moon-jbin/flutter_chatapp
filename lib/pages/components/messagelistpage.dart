@@ -11,16 +11,6 @@ class _MessageListPageState extends State<MessageListPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: Colors.blueGrey,
-        onPressed: () {
-          // Navigator.push(context,
-          //     MaterialPageRoute(builder: (BuildContext context) {
-          //   return SearchPage();
-          // }));
-        },
-        child: const Icon(Icons.add, color: Colors.black),
-      ),
     );
   }
 }

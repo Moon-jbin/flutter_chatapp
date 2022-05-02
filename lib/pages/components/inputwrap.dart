@@ -5,6 +5,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:messageapp/methods/database.dart';
+import 'package:messageapp/methods/helperfunctions.dart';
 
 import '../mainpage.dart';
 import '../register.dart';
@@ -112,8 +114,17 @@ class _InputWrapState extends State<InputWrap> {
     // Firebase 로그인 쪽
     await Firebase.initializeApp();
     try {
-      await FirebaseAuth.instance.signInWithEmailAndPassword(
-          email: _emailController.text, password: _pwController.text);
+      await FirebaseAuth.instance
+          .signInWithEmailAndPassword(
+              email: _emailController.text, password: _pwController.text)
+          .then((result) async {
+        if (result != null) {
+          QuerySnapshot userInfoSnapshot =
+              await DatabaseMethod().getUserInfo(_emailController.text);
+          HelperFunctions.saveUserNameSharedPreference(
+            userInfoSnapshot.docs.isNotEmpty ? userInfoSnapshot.docs[0]["userName"] : '');
+        }
+      });
 
       Get.offAll(() => MainPage());
     } on FirebaseAuthException catch (e) {
@@ -142,24 +153,23 @@ class _InputWrapState extends State<InputWrap> {
       idToken: googleAuth?.idToken,
     );
 
-    final authResult = await FirebaseAuth.instance.signInWithCredential(credential);
+    final authResult =
+        await FirebaseAuth.instance.signInWithCredential(credential);
     final user = authResult.user;
-
-
 
     await FirebaseFirestore.instance
         .collection('users')
-        .doc(FirebaseAuth.instance.currentUser?.uid) // newUser에서 user의 정보중 uid를 doc이름으로 설정시켜준다.
+        .doc(FirebaseAuth.instance.currentUser
+            ?.uid) // newUser에서 user의 정보중 uid를 doc이름으로 설정시켜준다.
         .set({
       // 필드값을 넣어준다.
       'userName': user!.displayName,
       'email': user.email,
     });
 
-
     // Once signed in, return the UserCredential
-    Get.offAll(()=> MainPage() );
+    Get.offAll(() => MainPage());
 
-    return authResult;  // 리턴 값을 활성화 하기 위해 불러낸다.
+    return authResult; // 리턴 값을 활성화 하기 위해 불러낸다.
   }
 }

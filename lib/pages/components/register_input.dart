@@ -2,6 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:messageapp/methods/database.dart';
+import 'package:messageapp/methods/helperfunctions.dart';
 
 import '../login.dart';
 
@@ -153,14 +155,17 @@ class _RegisterInputState extends State<RegisterInput> {
     try {
       if (_formKey.currentState!.validate()) {
         // 이부분이 TextFormField 에 있는 validate 를 검사한다.
-
-        final newUser = await FirebaseAuth.instance
+       final newUser = await FirebaseAuth.instance
             .createUserWithEmailAndPassword(
-                email: _emailController.text, password: _pwController.text);
-        // 이 코드가 firebase 에다가 이메일, 비밀번호를 넣어주는 역할!
-        // 구글 로그인에서는 로그인시 자동으로 firebase에 다가 넣어줌.
-
-
+                // 이 코드가 firebase 에다가 이메일, 비밀번호를 넣어주는 역할!
+                // 구글 로그인에서는 로그인시 자동으로 firebase에 다가 넣어줌.
+                email: _emailController.text,
+                password: _pwController.text)
+            .then(
+          (result) async {
+            HelperFunctions.saveUserNameSharedPreference(_userName);
+          },
+        );
         await FirebaseFirestore.instance
             .collection('users')
             .doc(newUser.user!.uid) // newUser에서 user의 정보중 uid를 doc이름으로 설정시켜준다.
@@ -170,10 +175,9 @@ class _RegisterInputState extends State<RegisterInput> {
           'email': _emailValue,
           'password': _pwValue
         }); // 이렇게 해야지 사용자 UID 로 인해서 email 인증 로그인 과 통합된 UID를 가지므로 id를 가질 수 있다.
-          // 이부분 을 구글 로그인시 컬렉션에 넣어 줘야 함.
+        // 이부분 을 구글 로그인시 컬렉션에 넣어 줘야 함.
         // 그러면 생각을 해봐야 겠다.
         // userName(displayName)만 넣어보자. 물론 이부분은 구글 로그인 버튼을 클릭시 일어나야 한다.
-
 
         Get.snackbar('회원가입 완료', '가입이 완료되었습니다.');
 

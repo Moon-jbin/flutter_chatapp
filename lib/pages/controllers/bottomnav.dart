@@ -52,7 +52,7 @@ class BottomNavController extends GetxController {
         ],
       ),
       ),
-    Container( child: SearchPage(), ),
+    SearchPage(),
     // Center(child: SearchPage()),
     Center(child: const Text('hi'))
   ];

@@ -1,11 +1,18 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
-
+// import 'package:get/get_core/src/get_main.dart';
 import '../pages/login.dart';
+import 'user.dart';
 
 class SignData {
+
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+
+  Users? _userFormFirebaseUser(user) {
+    return user != null ? Users(uid: user.uid) : null;
+  }
+
 
   void signOut () async{
     await Firebase.initializeApp();
@@ -15,13 +22,6 @@ class SignData {
     }catch(e){
       print(e.toString());
     }
-  }
-
-  void checkDisplayName() async{  // displayName은 회원가입한 이메일이 나온다.
-    await Firebase.initializeApp();
-    User? user = FirebaseAuth.instance.currentUser;
-    // user?.updateProfile(displayName:_emailController.text);
-    print(user?.displayName);
   }
 
 

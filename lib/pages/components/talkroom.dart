@@ -1,23 +1,36 @@
 import 'package:flutter/material.dart';
+import 'package:messageapp/constants.dart';
 import 'package:messageapp/pages/components/new_message.dart';
 
+import '../../methods/helperfunctions.dart';
 import 'message.dart';
 
 // 실제 대화방
 class TalkRoom extends StatefulWidget {
   const TalkRoom({Key? key}) : super(key: key);
-
   @override
   _TalkRoomState createState() => _TalkRoomState();
 }
 
 class _TalkRoomState extends State<TalkRoom> {
+
+  @override
+  void initState(){
+    getUserInfo();  // 채팅방 입장시 해당 유저 네임을 바로 초기값 설정을 하기 위해 initState()에 할당해준다.
+    super.initState();
+  }
+
+  // 공통참조할 유저 네임을 받아주는 메소드 이다.
+  getUserInfo() async{
+      Constants.myName = (await HelperFunctions.getUserNameSharedPreference())!;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          'Talk',
+          'TalkRoom',
           style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
         ),
         backgroundColor: Colors.white,

@@ -5,9 +5,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:messageapp/methods/database.dart';
-import 'package:messageapp/methods/helperfunctions.dart';
+// import 'package:messageapp/methods/database.dart';
+// import 'package:messageapp/methods/helperfunctions.dart';
 
+import '../../methods/database.dart';
+import '../../methods/helperfunctions.dart';
+import '../../methods/signdata.dart';
 import '../mainpage.dart';
 import '../register.dart';
 
@@ -19,9 +22,33 @@ class InputWrap extends StatefulWidget {
 }
 
 class _InputWrapState extends State<InputWrap> {
+
+  SignData authMethods = SignData();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _pwController = TextEditingController();
+  DatabaseMethod databaseMethod = DatabaseMethod();
+  late QuerySnapshot snapshotUserInfo;
+
+  signIn(){
+    HelperFunctions.saveUserEmailSharedPreference( _emailController.text);
+
+    databaseMethod.getUserByUserEmail(_emailController.text).then((value){
+      snapshotUserInfo = value;
+      HelperFunctions.saveUserEmailSharedPreference(snapshotUserInfo.docs[0]["userName"]);
+    });
+    authMethods.signInWithEmailAndPassword(_emailController.text, _pwController.text).then((value){
+          if(value != null) {
+
+            HelperFunctions.saveUserLoggedInSharedPreference(true);
+
+            Get.offAll(() => MainPage());
+          }
+    });
+
+
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -67,7 +94,8 @@ class _InputWrapState extends State<InputWrap> {
                   // 로그인 버튼입니다.
                   ElevatedButton(
                     onPressed: () {
-                      _FireBaselogin();
+                      // _FireBaselogin();
+                      signIn();
                     },
                     child: const Text(
                       '로그인',
@@ -110,34 +138,34 @@ class _InputWrapState extends State<InputWrap> {
     );
   }
 
-  void _FireBaselogin() async {
-    // Firebase 로그인 쪽
-    await Firebase.initializeApp();
-    try {
-      await FirebaseAuth.instance
-          .signInWithEmailAndPassword(
-              email: _emailController.text, password: _pwController.text)
-          .then((result) async {
-        if (result != null) {
-          QuerySnapshot userInfoSnapshot =
-              await DatabaseMethod().getUserInfo(_emailController.text);
-          HelperFunctions.saveUserNameSharedPreference(
-            userInfoSnapshot.docs.isNotEmpty ? userInfoSnapshot.docs[0]["userName"] : '');
-        }
-      });
-
-      Get.offAll(() => MainPage());
-    } on FirebaseAuthException catch (e) {
-      if (e.code == 'invalid-email') {
-        Get.snackbar('로그인 실패', '가입된 이메일이 아닙니다.');
-      }
-      if (e.code == 'wrong-password') {
-        Get.snackbar('로그인 실패', '비밀번호를 다시 확인해주세요.');
-      } else {
-        print(e);
-      }
-    }
-  }
+  // void _FireBaselogin() async {
+  //   // Firebase 로그인 쪽
+  //   await Firebase.initializeApp();
+  //   try {
+  //     await FirebaseAuth.instance
+  //         .signInWithEmailAndPassword(
+  //             email: _emailController.text, password: _pwController.text)
+  //         .then((result) async {
+  //       if (result != null) {
+  //         QuerySnapshot userInfoSnapshot =
+  //             await DatabaseMethod().getUserInfo(_emailController.text);
+  //         HelperFunctions.saveUserNameSharedPreference(
+  //           userInfoSnapshot.docs.isNotEmpty ? userInfoSnapshot.docs[0]["userName"] : '');
+  //       }
+  //     });
+  //
+  //     Get.offAll(() => MainPage());
+  //   } on FirebaseAuthException catch (e) {
+  //     if (e.code == 'invalid-email') {
+  //       Get.snackbar('로그인 실패', '가입된 이메일이 아닙니다.');
+  //     }
+  //     if (e.code == 'wrong-password') {
+  //       Get.snackbar('로그인 실패', '비밀번호를 다시 확인해주세요.');
+  //     } else {
+  //       print(e);
+  //     }
+  //   }
+  // }
 
   Future<UserCredential> signInWithGoogle() async {
     // Trigger the authentication flow

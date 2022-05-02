@@ -148,7 +148,7 @@ class _SearchPageState extends State<SearchPage> {
 
 // 채팅룸 아이디를 만드는 메소드 즉, 알고리즘이다.
 getChatRoomId(String a, String b) {
-  if (a.substring(0, 1).codeUnitAt(0) > b.substring(0, 1).codeUnitAt(0)) {
+  if (a.compareTo(b) > 0) {
     return "$b\_$a";
   } else {
     return "$a\_$b";

@@ -1,8 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:messageapp/pages/components/talkroom.dart';
 
 
+import '../components/image_add.dart';
 import '../components/messagelistpage.dart';
 import '../components/searchpage.dart';
 
@@ -34,26 +36,10 @@ class BottomNavController extends GetxController {
 
   List pages = [
     Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Text('안녕하세요!'),
-          SizedBox(height: 10),
-          Text('messaGe는 Flutter & Firebase로 만든 채팅앱입니다.'),
-          StreamBuilder(
-              stream: FirebaseAuth.instance.authStateChanges(),
-              builder: (BuildContext context, AsyncSnapshot<User?> snapshot) {
-                if (snapshot.hasData) {
-                  return Text("환영합니다.");
-                } else {
-                  return Text('${FirebaseAuth.instance.currentUser?.uid}');
-                }
-              }),
-        ],
-      ),
+      child: ImageAdd()
       ),
     SearchPage(),
     // Center(child: SearchPage()),
-    Center(child: const Text('hi'))
+    TalkRoom()
   ];
 }

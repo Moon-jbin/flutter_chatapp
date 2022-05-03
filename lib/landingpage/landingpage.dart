@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 // import '../pages/mainpage.dart';      // Ui 작업으로 인해 불러옴. 나중에 login 으로 다시 바꿔야됨
+import '../methods/helperfunctions.dart';
 import '../pages/login.dart';
 
 class LandingPage extends StatefulWidget {
@@ -13,6 +14,10 @@ class LandingPage extends StatefulWidget {
 }
 
 class _LandingPageState extends State<LandingPage> {
+
+
+
+
 
   @override
   void initState() {

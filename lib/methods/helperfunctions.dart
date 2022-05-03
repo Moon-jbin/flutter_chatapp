@@ -39,4 +39,23 @@ import 'package:shared_preferences/shared_preferences.dart';
      return await preferences.getString(sharedPreferenceUserEmailKey);
    }
 
+   static Future<bool> removeUserLoggedInSharedPreference() async{
+     SharedPreferences preferences = await SharedPreferences.getInstance();
+     return await preferences.remove(sharedPreferenceUserLoggedInKey);
+   }
+
+   static Future<bool> removeUserNameSharedPreference() async{
+     SharedPreferences preferences = await SharedPreferences.getInstance();
+     return await preferences.remove(sharedPreferenceUserNameKey);
+   }
+
+   static Future<bool> removeUserEmailSharedPreference() async{
+     SharedPreferences preferences = await SharedPreferences.getInstance();
+     return await preferences.remove(sharedPreferenceUserEmailKey);
+   }
+
+
+
+
+
  }

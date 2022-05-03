@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
+// import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -8,6 +8,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 // import 'package:messageapp/methods/database.dart';
 // import 'package:messageapp/methods/helperfunctions.dart';
 
+import '../../constants.dart';
 import '../../methods/database.dart';
 import '../../methods/helperfunctions.dart';
 import '../../methods/signdata.dart';
@@ -32,10 +33,13 @@ class _InputWrapState extends State<InputWrap> {
 
   signIn(){
     HelperFunctions.saveUserEmailSharedPreference( _emailController.text);
-
     databaseMethod.getUserByUserEmail(_emailController.text).then((value){
       snapshotUserInfo = value;
-      HelperFunctions.saveUserEmailSharedPreference(snapshotUserInfo.docs[0]["userName"]);
+
+       HelperFunctions.saveUserNameSharedPreference(snapshotUserInfo.docs[0]["userName"]);
+
+
+
     });
     authMethods.signInWithEmailAndPassword(_emailController.text, _pwController.text).then((value){
           if(value != null) {
@@ -58,7 +62,7 @@ class _InputWrapState extends State<InputWrap> {
           key: _formKey,
           child: Container(
             height: 450,
-            padding: const EdgeInsets.fromLTRB(70.0, 80.0, 70.0, 0),
+            padding: const EdgeInsets.fromLTRB(70.0, 50.0, 70.0, 0),
             decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(10),
@@ -128,7 +132,7 @@ class _InputWrapState extends State<InputWrap> {
                   const SizedBox(height: 10),
                   ElevatedButton(
                       onPressed: signInWithGoogle,
-                      child: const Text('google 로그인'))
+                      child: const Text('google 로그인')),
                 ],
               ),
             ),
@@ -194,6 +198,10 @@ class _InputWrapState extends State<InputWrap> {
       'userName': user!.displayName,
       'email': user.email,
     });
+
+    HelperFunctions.saveUserNameSharedPreference(user.displayName.toString());
+    HelperFunctions.saveUserEmailSharedPreference(user.email.toString());
+
 
     // Once signed in, return the UserCredential
     Get.offAll(() => MainPage());

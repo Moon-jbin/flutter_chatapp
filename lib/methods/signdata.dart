@@ -3,6 +3,9 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:messageapp/constants.dart';
+import 'package:messageapp/methods/helperfunctions.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 // import 'package:get/get_core/src/get_main.dart';
 import '../pages/login.dart';
 import 'user.dart';
@@ -57,12 +60,14 @@ class SignData {
   void signOut () async{
     await Firebase.initializeApp();
     try {
+      // HelperFunctions.removeUserEmailSharedPreference();
+      // HelperFunctions.removeUserNameSharedPreference();
+      // HelperFunctions.removeUserEmailSharedPreference();
       await FirebaseAuth.instance.signOut();
+
       Get.offAll(()=>LoginPage());
     }catch(e){
       print(e.toString());
     }
   }
-
-
 }

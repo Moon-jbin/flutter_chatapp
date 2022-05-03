@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 
+import '../constants.dart';
+import '../methods/helperfunctions.dart';
 import '../methods/signdata.dart';
 import 'controllers/bottomnav.dart';
 
@@ -15,6 +17,24 @@ class MainPage extends StatefulWidget {
 
 class _MainPageState extends State<MainPage> {
   final BottomNavController _controller = Get.put(BottomNavController());
+
+
+  @override
+  void initState(){
+    getUserInfo();  // 채팅방 입장시 해당 유저 네임을 바로 초기값 설정을 하기 위해 initState()에 할당해준다.
+    super.initState();
+  }
+
+  // 공통참조할 유저 네임을 받아주는 메소드 이다.
+  getUserInfo() async{
+    Constants.myName = (await HelperFunctions.getUserNameSharedPreference())!;
+    setState(() {
+
+    });
+  }
+
+
+
 
   @override
   Widget build(BuildContext context) {

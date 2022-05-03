@@ -55,7 +55,7 @@ class _ImageAddState extends State<ImageAdd> {
     // 프로필 편집 클릭시 이미지를 선택할 수 있게 해주는 메서드이다.
     final imagePicker = ImagePicker();
     final pickedImageFile = await imagePicker.pickImage(
-      source: ImageSource.gallery,
+      source: ImageSource.camera,
       imageQuality: 50,
       maxHeight: 150
     );

@@ -27,25 +27,32 @@ class _TalkRoomState extends State<TalkRoom> {
               ? ListView.builder(
                   itemCount: snapshot.data!.docs.length,
                   itemBuilder: (context, index) {
-                    return ChatRoomTile(
-                        snapshot.data!.docs[index].data()["talkroomId"]
-                            .toString().replaceAll("_","")
-                            .replaceAll(Constants.myName, ""),
-                        snapshot.data!.docs[index].data()["talkroomId"]
+                    return Card(
+                      child: ChatRoomTile(
+                          snapshot.data!.docs[index].data()["talkroomId"],
+                          // .toString()
+                          // .replaceAll("_", "")
+                          // .replaceAll(Constants.myName, ""),   // 유저의 이름을 나타낼 수 있게 하는 코드이다.
+                          snapshot.data!.docs[index].data()["talkroomId"]
+                          // 바로 이 부분을 통해서 채팅방 클릭시 해당 대화방으로 입장 할 수 있다.
+                          ),
                     );
-                  })
+                  },
+                )
               : Container();
         });
   }
 
   // 공통참조할 유저 네임을 받아주는 메소드 이다.
   getUserInfo() async {
+    // SharedPreference 를 사용하지 않게되면 굳이 initeState를 사용할 필요가 있을까?
     Constants.myName = (await HelperFunctions.getUserNameSharedPreference())!;
     databaseMethod.getTalkRooms(Constants.myName).then((value) {
+      //이부분을 통해서 myName을 통해 해당 유저에게 보여질 데이터 정보를 보여준다.
       // 채팅방의 인자로 본인 이름을 받는다.
       setState(() {
         chatRoomsStream = value;
-        print("${chatRoomsStream}  this is name ${Constants.myName} ");
+        // print("${chatRoomsStream}  this is name ${Constants.myName} ");
       });
     });
   }
@@ -70,29 +77,41 @@ class _TalkRoomState extends State<TalkRoom> {
 class ChatRoomTile extends StatelessWidget {
   final String userName;
   final String talkRoomId;
+
   ChatRoomTile(this.userName, this.talkRoomId);
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: (){
-        Get.to(()=> MessageScreen(talkroomId: talkRoomId));
+    return ListTile(
+      title: Text(
+        userName,
+        style: const TextStyle(fontWeight: FontWeight.bold),
+      ),
+      onTap: () {
+        Get.to(() => MessageScreen(talkroomId: talkRoomId));
       },
-      child: Row(
-        children: [
-          Container(
-              height: 40,
-              width: 40,
-              decoration: BoxDecoration(
-                  color: Colors.blue, borderRadius: BorderRadius.circular(40)),
-              child: Center(
-                child: Text("${userName.substring(0, 1)}"),
-              )
-          ),
-          SizedBox(width: 8),
-          Text(userName)
-        ],
-      )
+      // trailing: Text(),
     );
+
+    GestureDetector(
+        onTap: () {
+          Get.to(() => MessageScreen(
+              talkroomId: talkRoomId)); // 채팅방 클릭시 talkRoomId 값으로 인해 들어갈 수 있다.
+        },
+        child: Row(
+          children: [
+            Container(
+                height: 40,
+                width: 40,
+                decoration: BoxDecoration(
+                    color: Colors.blue,
+                    borderRadius: BorderRadius.circular(40)),
+                child: Center(
+                  child: Text("${userName.substring(0, 1)}"),
+                )),
+            SizedBox(width: 8),
+            Text(userName)
+          ],
+        ));
   }
 }

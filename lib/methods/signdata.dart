@@ -63,6 +63,7 @@ class SignData {
       // HelperFunctions.removeUserEmailSharedPreference();
       // HelperFunctions.removeUserNameSharedPreference();
       // HelperFunctions.removeUserEmailSharedPreference();
+      Constants.myName = "";
       await FirebaseAuth.instance.signOut();
 
       Get.offAll(()=>LoginPage());

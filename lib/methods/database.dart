@@ -86,10 +86,10 @@ class DatabaseMethod {
     });
   }
 
-  getTalkRooms(String userName) async{
+  getTalkRooms(String userName) async {
     return await FirebaseFirestore.instance
         .collection("TalkRoom")
         .where("users", arrayContains: userName)
-        .snapshots();
+        .snapshots(); // 이 부분을 통해서 myName을 통해 어떤 유저에 대한 정보를 보여줄지를 보여준다.
   }
 }

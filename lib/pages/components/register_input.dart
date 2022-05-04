@@ -9,7 +9,7 @@ import 'package:messageapp/methods/helperfunctions.dart';
 // import 'package:messageapp/methods/database.dart';
 // import 'package:messageapp/methods/helperfunctions.dart';
 
-import '../../constants.dart';
+// import '../../constants.dart';
 import '../../methods/signdata.dart';
 import '../login.dart';
 
@@ -28,7 +28,7 @@ class _RegisterInputState extends State<RegisterInput> {
   final TextEditingController _nameController = TextEditingController();
 
   DatabaseMethod databaseMethod = DatabaseMethod();
-  late String _userName = "";
+  // late String _userName = "";
   late String _emailValue = "";
   late String _pwValue = "";
 
@@ -95,9 +95,9 @@ class _RegisterInputState extends State<RegisterInput> {
                       }
                       return null;
                     },
-                    onChanged: (value) {
-                      _userName = value;
-                    },
+                    // onChanged: (value) {
+                    //   _userName = value;
+                    // },
                   ),
 
                   const SizedBox(height: 20),

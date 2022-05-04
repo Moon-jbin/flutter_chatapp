@@ -21,7 +21,7 @@ class _MainPageState extends State<MainPage> {
 
   @override
   void initState(){
-    getUserInfo();  // 채팅방 입장시 해당 유저 네임을 바로 초기값 설정을 하기 위해 initState()에 할당해준다.
+    // getUserInfo();  // 채팅방 입장시 해당 유저 네임을 바로 초기값 설정을 하기 위해 initState()에 할당해준다.
     super.initState();
   }
 

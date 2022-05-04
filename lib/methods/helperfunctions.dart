@@ -5,7 +5,7 @@ import 'package:shared_preferences/shared_preferences.dart';
    static String sharedPreferenceUserNameKey = "USERNAMEKEY";
    static String sharedPreferenceUserEmailKey = "USEREMAILKEY";
 
-   /// saving data to sharedpreference
+
    static Future<bool> saveUserLoggedInSharedPreference(bool isUserLoggedIn) async{
 
      // 공유 참조해주는 유저네임, 이메일, 비밀번호를 두었다.
@@ -23,7 +23,6 @@ import 'package:shared_preferences/shared_preferences.dart';
      return await preferences.setString(sharedPreferenceUserEmailKey, userEmail);
    }
 
-   /// fetching data from sharedpreference
    static Future<bool?> getUserLoggedInSharedPreference() async{
      SharedPreferences preferences = await SharedPreferences.getInstance();
      return await preferences.getBool(sharedPreferenceUserLoggedInKey);
@@ -53,9 +52,5 @@ import 'package:shared_preferences/shared_preferences.dart';
      SharedPreferences preferences = await SharedPreferences.getInstance();
      return await preferences.remove(sharedPreferenceUserEmailKey);
    }
-
-
-
-
 
  }

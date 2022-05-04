@@ -1,11 +1,7 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:messageapp/pages/components/talkroom.dart';
-
-
 import '../components/image_add.dart';
-import '../components/messagelistpage.dart';
 import '../components/searchpage.dart';
 
 // import '../profilepage.dart';
@@ -36,7 +32,7 @@ class BottomNavController extends GetxController {
 
   List pages = [
     Center(
-      child: ImageAdd()
+      child: Text('프로필')
       ),
     SearchPage(),
     // Center(child: SearchPage()),

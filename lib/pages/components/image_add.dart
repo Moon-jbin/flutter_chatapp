@@ -1,4 +1,4 @@
-import 'dart:io';
+import 'dart:io';   // 1번
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -15,7 +15,7 @@ class ImageAdd extends StatefulWidget {
 }
 
 class _ImageAddState extends State<ImageAdd> {
-  File? pickedImage;  // File을 사용하려면 dart.io 를 import 해야한다.
+  File? pickedImage;  // File을 사용하려면 dart.io 를 import 해야한다.  // 2번
 
 
 
@@ -30,7 +30,7 @@ class _ImageAddState extends State<ImageAdd> {
           CircleAvatar(
             radius: 40,
             backgroundColor: Colors.blue,
-            backgroundImage: pickedImage != null ? FileImage(pickedImage!) : null,
+            backgroundImage: pickedImage != null ? FileImage(pickedImage!) : null,    // last
           ),
           const SizedBox(height: 10),
           OutlinedButton.icon(
@@ -51,7 +51,7 @@ class _ImageAddState extends State<ImageAdd> {
     );
   }
 
-  void _pickImage() async {
+  void _pickImage() async {    //  3 이미지 클릭 메서드
     // 프로필 편집 클릭시 이미지를 선택할 수 있게 해주는 메서드이다.
     final imagePicker = ImagePicker();
     final pickedImageFile = await imagePicker.pickImage(

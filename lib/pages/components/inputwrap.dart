@@ -1,10 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+
 // import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+
 // import 'package:messageapp/methods/database.dart';
 // import 'package:messageapp/methods/helperfunctions.dart';
 
@@ -30,28 +32,6 @@ class _InputWrapState extends State<InputWrap> {
   final TextEditingController _pwController = TextEditingController();
   DatabaseMethod databaseMethod = DatabaseMethod();
   late QuerySnapshot snapshotUserInfo;
-
-  signIn(){
-    HelperFunctions.saveUserEmailSharedPreference( _emailController.text);
-    databaseMethod.getUserByUserEmail(_emailController.text).then((value){
-      snapshotUserInfo = value;
-
-       HelperFunctions.saveUserNameSharedPreference(snapshotUserInfo.docs[0]["userName"]);
-
-
-
-    });
-    authMethods.signInWithEmailAndPassword(_emailController.text, _pwController.text).then((value){
-          if(value != null) {
-
-            HelperFunctions.saveUserLoggedInSharedPreference(true);
-
-            Get.offAll(() => MainPage());
-          }
-    });
-
-
-  }
 
 
   @override
@@ -98,8 +78,8 @@ class _InputWrapState extends State<InputWrap> {
                   // 로그인 버튼입니다.
                   ElevatedButton(
                     onPressed: () {
-                      // _FireBaselogin();
                       signIn();
+                      // print("${Constants.myName}");
                     },
                     child: const Text(
                       '로그인',
@@ -131,8 +111,25 @@ class _InputWrapState extends State<InputWrap> {
                   ),
                   const SizedBox(height: 10),
                   ElevatedButton(
-                      onPressed: signInWithGoogle,
-                      child: const Text('google 로그인')),
+                    onPressed: signInWithGoogle,
+                    style: ElevatedButton.styleFrom(
+                      elevation: 1,
+                      side: BorderSide(width: 1, color: Colors.grey),
+                      primary: Colors.white,
+                      minimumSize: const Size.fromHeight(55),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Image.asset("assets/image/google_logo.png"),
+                        const Text(
+                          'Sign in with Google',
+                          style: TextStyle(
+                              color: Colors.grey, fontWeight: FontWeight.bold),
+                        ),
+                      ],
+                    ),
+                  ),
                 ],
               ),
             ),
@@ -171,6 +168,25 @@ class _InputWrapState extends State<InputWrap> {
   //   }
   // }
 
+  signIn() {
+    HelperFunctions.saveUserEmailSharedPreference(_emailController.text);
+    databaseMethod.getUserByUserEmail(_emailController.text).then((value) {
+      snapshotUserInfo = value;
+    // Constants.myName = snapshotUserInfo.docs[0]["userName"];
+      HelperFunctions.saveUserNameSharedPreference(
+          snapshotUserInfo.docs[0]["userName"]);
+    });
+    authMethods
+        .signInWithEmailAndPassword(_emailController.text, _pwController.text)
+        .then((value) {
+      if (value != null) {
+        HelperFunctions.saveUserLoggedInSharedPreference(true);
+
+        Get.offAll(() => MainPage());
+      }
+    });
+  }
+
   Future<UserCredential> signInWithGoogle() async {
     // Trigger the authentication flow
     final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
@@ -201,8 +217,6 @@ class _InputWrapState extends State<InputWrap> {
 
     HelperFunctions.saveUserNameSharedPreference(user.displayName.toString());
     HelperFunctions.saveUserEmailSharedPreference(user.email.toString());
-
-
     // Once signed in, return the UserCredential
     Get.offAll(() => MainPage());
 

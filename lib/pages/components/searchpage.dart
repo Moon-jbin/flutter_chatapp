@@ -10,13 +10,14 @@ import '../../methods/helperfunctions.dart';
 
 class SearchPage extends StatefulWidget {
   const SearchPage({Key? key}) : super(key: key);
+
   @override
   _SearchPageState createState() => _SearchPageState();
 }
 
-
 class _SearchPageState extends State<SearchPage> {
   DatabaseMethod databaseMethods = DatabaseMethod();
+
   // 데이터베이스 클래스에서 받은 유저 데이터 값을 사용하기 위해 불러온다.
   TextEditingController searchController = TextEditingController();
 
@@ -41,27 +42,30 @@ class _SearchPageState extends State<SearchPage> {
     databaseMethods.getUserByUserName(searchController.text).then((result) {
       // 데이터 베이스에 있는 값을 찾을 건데 내가 검색한 userName의 값을 받아올것이고
       // 그것은 then 으로 결과값을 가지고 와서 사용한다.
-      if (mounted) {  // mounted를 하지않으면 dispose error가 발생한다. 따라서 사용하면 에러가 사라지는 것을 볼 수 있다.
-        setState(() {   // 해당 searchSnapshot을
+      if (mounted) {
+        // mounted를 하지않으면 dispose error가 발생한다. 따라서 사용하면 에러가 사라지는 것을 볼 수 있다.
+        setState(() {
+          // 해당 searchSnapshot을
           searchSnapshot = result;
         });
       }
     });
   }
-  // getUserInfo() async{  // 이 함수는 myName 즉, 본인의 로그인한 userName을 가지고 올 수 있게 해준다.
-  //   Constants.myName = (await HelperFunctions.getUserNameSharedPreference())!;
-  // }   //내가 해냈따 ! 본 로그인 계정의 userName을 사용했다 !!! 아싸아싸 ! 잘했다 나 자신 ..!!! ㅠㅠㅠㅠㅠㅠㅠㅠ
+
+  getUserInfo() async{  // 이 함수는 myName 즉, 본인의 로그인한 userName을 가지고 올 수 있게 해준다.
+    Constants.myName = (await HelperFunctions.getUserNameSharedPreference())!;
+  }   //내가 해냈따 ! 본 로그인 계정의 userName을 사용했다 !!! 아싸아싸 ! 잘했다 나 자신 ..!!! ㅠㅠㅠㅠㅠㅠㅠㅠ
 
   @override
-  void initState(){
-    // getUserInfo();   // 초기값으로 설정을 시켜주면 searchPage에 들어가자마자 로그인 userName을 가지고 오게 할 수 있다.
+  void initState() {
+    getUserInfo();   // 초기값으로 설정을 시켜주면 searchPage에 들어가자마자 로그인 userName을 가지고 오게 할 수 있다.
     super.initState();
   }
 
   // 대화방을 만든다. 당연하게 유저를 검색한 곳에서 대화하기를 누르면 대화방이 만들어 져야 하므로, searchPage에서 작성해준다.
   createTalkRoomAndStartTalk({required String userName}) {
-
-    if( userName != Constants.myName ){ // 본인 계정에게 검색해서 메시지보냄을 방지하는 코드이다.
+    if (userName != Constants.myName) {
+      // 본인 계정에게 검색해서 메시지보냄을 방지하는 코드이다.
       // 카카오톡에서는 하던데... 흠... 일단 이렇게 진행해 보자.
       String talkroomId = getChatRoomId(userName, Constants.myName);
       // 이 함수를 통해서 대화방ID를 만들어 질 것이고,
@@ -79,15 +83,14 @@ class _SearchPageState extends State<SearchPage> {
       // 아까 만들어둔 databaseMethods 확인해보자.
 
       // 그리고 방을 생성하면 대화방으로 갈 수 있도록 코드를 구성해주자.
-      Navigator.push(context, MaterialPageRoute(
-          builder: (context){  return MessageScreen(talkroomId : talkroomId); }
-      ));
+      Navigator.push(context, MaterialPageRoute(builder: (context) {
+        return MessageScreen(talkroomId: talkroomId);
+      }));
 
       // Get.to(()=> MessageScreen(talkroomId));
     } else {
       print("자기자신에게는 보낼 수 없습니다.");
     }
-
   }
 
 // SearchTile 은 검색결과로 나온 유저의 정보이다.
@@ -96,24 +99,30 @@ class _SearchPageState extends State<SearchPage> {
       children: [
         Container(
           padding: const EdgeInsets.symmetric(horizontal: 16),
-          child: Text(userName),  // 이부분이 검색한 결과가 나오는 구간이다.
+          child: Text(userName), // 이부분이 검색한 결과가 나오는 구간이다.
         ),
         Spacer(),
         Expanded(
           child: Container(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
             child: ElevatedButton(
-              onPressed: () {
-                createTalkRoomAndStartTalk(userName: userName); // 대화하기 버튼을 누르게 되면 대화방이 만들어 진다.
-              },
-              child: const Text("대화하기"),
-            ),
+                onPressed: () {
+                  createTalkRoomAndStartTalk(
+                      userName: userName); // 대화하기 버튼을 누르게 되면 대화방이 만들어 진다.
+                },
+                child: const Text(
+                  "대화하기",
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+                style: ElevatedButton.styleFrom(
+                  primary: Colors.black,
+                  minimumSize: const Size.fromHeight(40),
+                )),
           ),
         )
       ],
     );
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -149,7 +158,6 @@ class _SearchPageState extends State<SearchPage> {
     );
   }
 }
-
 
 // 채팅룸 아이디를 만드는 메소드 즉, 알고리즘이다.
 getChatRoomId(String a, String b) {

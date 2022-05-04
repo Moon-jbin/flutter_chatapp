@@ -12,6 +12,7 @@ class Message extends StatelessWidget {
 
     final user = FirebaseAuth.instance.currentUser;  // 현재 로그중인 아이디 인지를 위해 또 불러옴옴
 
+
    return StreamBuilder(
       // 메시지를 실시간으로 구독해야 하기 때문에 stream 으로 한다.
       stream: FirebaseFirestore.instance

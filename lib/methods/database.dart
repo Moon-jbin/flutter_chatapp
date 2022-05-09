@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class DatabaseMethod {
   // 친구 검색할시에 사용될 데이터베이스 메소드이다.
@@ -42,9 +43,9 @@ class DatabaseMethod {
     });
   }
 
-  addConversationMessages(String chatRoomId, messageMap) {
+  addConversationMessages(String chatRoomId, messageMap)  async{
     // 메시지를 데이터 베이스에 추가시켜주는 기능
-    FirebaseFirestore.instance
+    await FirebaseFirestore.instance
         .collection("TalkRoom")
         .doc(chatRoomId)
         .collection("chats")
@@ -55,7 +56,7 @@ class DatabaseMethod {
   }
 
   getConversationMessages(String chatRoomId) async {
-    // 메시를 데이터베이스에서 받아오게 하는 기능
+    //  데이터베이스에서 받아오게 하는 기능
     return FirebaseFirestore.instance
         .collection("TalkRoom")
         .doc(chatRoomId)
@@ -92,4 +93,25 @@ class DatabaseMethod {
         .where("users", arrayContains: userName)
         .snapshots(); // 이 부분을 통해서 myName을 통해 어떤 유저에 대한 정보를 보여줄지를 보여준다.
   }
+
+  getLastMessage (String chatRoomId) async{
+    // 메시를 데이터베이스에서 받아오게 하는 기능
+    return await FirebaseFirestore.instance
+        .collection("TalkRoom")
+        .doc(chatRoomId)
+        .collection("chats")
+        .orderBy("time", descending: true) // 범인은 오타였다니... 으윽......한심한심... ㅠㅠㅠ
+        .limit(1)
+        .snapshots();
+  }
+
+
+  getProfileInfo (String currentUserUid) async{
+
+    return await FirebaseFirestore.instance
+        .collection("users")
+        .doc(currentUserUid)
+        .snapshots();
+  }
+
 }

@@ -1,6 +1,10 @@
 import 'dart:io';   // 1번
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:uuid/uuid.dart';
 
 
 
@@ -8,7 +12,7 @@ import 'package:image_picker/image_picker.dart';
 // 이를 이용해서 각 계정간의 프로필 사진을 넣어볼 예정이다.
 
 class ImageAdd extends StatefulWidget {
-  const ImageAdd( {Key? key}) : super(key: key);
+  const ImageAdd({Key? key}) : super(key: key);
 
   @override
   _ImageAddState createState() => _ImageAddState();
@@ -43,6 +47,7 @@ class _ImageAddState extends State<ImageAdd> {
           const SizedBox(height: 80),
           TextButton(
               onPressed: () {
+                uploadImage();
                 Navigator.pop(context);
               },
               child: const Text("확인"))
@@ -64,5 +69,31 @@ class _ImageAddState extends State<ImageAdd> {
        pickedImage = File(pickedImageFile.path);
       }
     });
+  }
+
+  Future uploadImage() async{
+    int status = 1;
+    String fileName = Uuid().v1();
+    FirebaseAuth auth = FirebaseAuth.instance;
+
+
+    var ref = FirebaseStorage.instance.ref().child('images').child("$fileName.jpg");
+
+    var uploadTask = await ref.putFile(pickedImage!).catchError((e) async {
+      await FirebaseFirestore.instance
+          .collection("users")
+          .doc(auth.currentUser?.uid)
+          .delete();
+      status = 0;
+    });
+
+    if(status == 1){
+      String imageUrl = await uploadTask.ref.getDownloadURL();
+
+      await FirebaseFirestore.instance
+          .collection("users")
+          .doc(auth.currentUser?.uid)
+          .update({"img": imageUrl});
+    }
   }
 }

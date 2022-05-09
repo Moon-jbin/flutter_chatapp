@@ -1,15 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-
-// import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-
-// import 'package:messageapp/methods/database.dart';
-// import 'package:messageapp/methods/helperfunctions.dart';
-
+import 'package:messageapp/methods/database.dart';
+import 'package:messageapp/methods/helperfunctions.dart';
 import '../../constants.dart';
 import '../../methods/database.dart';
 import '../../methods/helperfunctions.dart';
@@ -172,7 +168,8 @@ class _InputWrapState extends State<InputWrap> {
     HelperFunctions.saveUserEmailSharedPreference(_emailController.text);
     databaseMethod.getUserByUserEmail(_emailController.text).then((value) {
       snapshotUserInfo = value;
-    // Constants.myName = snapshotUserInfo.docs[0]["userName"];
+
+    Constants.myName = snapshotUserInfo.docs[0]["userName"];
       HelperFunctions.saveUserNameSharedPreference(
           snapshotUserInfo.docs[0]["userName"]);
     });
@@ -181,7 +178,9 @@ class _InputWrapState extends State<InputWrap> {
         .then((value) {
       if (value != null) {
         HelperFunctions.saveUserLoggedInSharedPreference(true);
-
+        // User? user = FirebaseAuth.instance.currentUser;
+        // user?.updateDisplayName("$snapshotUserInfo");
+        //   print("$snapshotUserInfo");
         Get.offAll(() => MainPage());
       }
     });

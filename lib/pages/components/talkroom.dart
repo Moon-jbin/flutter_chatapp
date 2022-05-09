@@ -6,6 +6,7 @@ import 'package:messageapp/constants.dart';
 import 'package:messageapp/methods/database.dart';
 import 'package:messageapp/pages/components/messagescreen.dart';
 import '../../methods/helperfunctions.dart';
+import 'chatroomtile.dart';
 
 // 실제 대화방   (chatroom screen)
 class TalkRoom extends StatefulWidget {
@@ -66,52 +67,10 @@ class _TalkRoomState extends State<TalkRoom> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
       child: Column(
         children: [Expanded(child: chatRoomList())],
       ),
     );
-  }
-}
-
-class ChatRoomTile extends StatelessWidget {
-  final String userName;
-  final String talkRoomId;
-
-  ChatRoomTile(this.userName, this.talkRoomId);
-
-  @override
-  Widget build(BuildContext context) {
-    return ListTile(
-      title: Text(
-        userName,
-        style: const TextStyle(fontWeight: FontWeight.bold),
-      ),
-      onTap: () {
-        Get.to(() => MessageScreen(talkroomId: talkRoomId));
-      },
-      // trailing: Text(),
-    );
-
-    GestureDetector(
-        onTap: () {
-          Get.to(() => MessageScreen(
-              talkroomId: talkRoomId)); // 채팅방 클릭시 talkRoomId 값으로 인해 들어갈 수 있다.
-        },
-        child: Row(
-          children: [
-            Container(
-                height: 40,
-                width: 40,
-                decoration: BoxDecoration(
-                    color: Colors.blue,
-                    borderRadius: BorderRadius.circular(40)),
-                child: Center(
-                  child: Text("${userName.substring(0, 1)}"),
-                )),
-            SizedBox(width: 8),
-            Text(userName)
-          ],
-        ));
   }
 }

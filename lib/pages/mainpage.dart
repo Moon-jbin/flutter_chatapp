@@ -1,8 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
-
+// import 'package:intl/intl.dart';
+// import 'package:ntp/ntp.dart';
 import '../constants.dart';
 import '../methods/helperfunctions.dart';
 import '../methods/signdata.dart';
@@ -18,10 +19,10 @@ class MainPage extends StatefulWidget {
 class _MainPageState extends State<MainPage> {
   final BottomNavController _controller = Get.put(BottomNavController());
 
-
   @override
-  void initState(){
-    // getUserInfo();  // 채팅방 입장시 해당 유저 네임을 바로 초기값 설정을 하기 위해 initState()에 할당해준다.
+  void initState() {
+    currentUserName();
+    getUserInfo();  // 채팅방 입장시 해당 유저 네임을 바로 초기값 설정을 하기 위해 initState()에 할당해준다.
     super.initState();
   }
 
@@ -33,8 +34,15 @@ class _MainPageState extends State<MainPage> {
     });
   }
 
-
-
+  void currentUserName() {
+    final userNameWrap = FirebaseFirestore.instance.collection('users');
+    // 그러면 필드가 아닌 필드 안에 배열로 user 정보를 가져올까? 그러면 가능할 것 같기도 한데....?
+    // 추가로 집가서 쫌더 봐야겠다.
+    // 다른 테스트는 무엇이 될까... 할수 있겠찌...??? 허허...
+    userNameWrap.get().then((value)=>{
+      print(value)
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -51,9 +59,10 @@ class _MainPageState extends State<MainPage> {
             elevation: 0.5,
             actions: [
               TextButton(
-                  onPressed: () {
+                  onPressed: ()  async{
                     SignData().signOut();
                     FirebaseAuth.instance.signOut();
+
                   },
                   child: Text(
                     '로그아웃',

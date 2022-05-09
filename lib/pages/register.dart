@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import 'components/register_input.dart';
 
 class Register extends StatefulWidget {

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:messageapp/pages/components/talkroom.dart';
+import 'package:messageapp/pages/profilepage.dart';
 import '../components/image_add.dart';
 import '../components/searchpage.dart';
 
@@ -32,7 +33,7 @@ class BottomNavController extends GetxController {
 
   List pages = [
     Center(
-      child: Text('프로필')
+      child: ProfilePage()
       ),
     SearchPage(),
     // Center(child: SearchPage()),

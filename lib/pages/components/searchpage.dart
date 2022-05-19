@@ -21,19 +21,7 @@ class _SearchPageState extends State<SearchPage> {
 
   QuerySnapshot? searchSnapshot;
 
-  Widget searchList() {
-    return searchSnapshot != null
-        ? ListView.builder(
-            itemCount: searchSnapshot!.docs.length,
-            // 그리고는 해당 검색한 searchSnapshot의 문서에 length를 찾아서 Count에 넣어주면 검색시 Tile의 갯수를 확인할 수 있다.
-            itemBuilder: (context, index) {
-              return SearchTile(
-                userName: searchSnapshot!.docs[index]["userName"],
-                // userName값을 searchSnapshot 입력된 값을  docs중 userName에 있는 것과 같은값을 가져온다.
-              );
-            })
-        : Container();
-  }
+
 
   initialSearch() {
     // 검색한 값을 자료형이 QuerySnapshot인 searchSnapshot이란 변수에 할당한다.
@@ -50,17 +38,12 @@ class _SearchPageState extends State<SearchPage> {
     });
   }
 
-  getUserInfo() async{  // 이 함수는 myName 즉, 본인의 로그인한 userName을 가지고 올 수 있게 해준다.
+  getUserInfo() async {
+    // 이 함수는 myName 즉, 본인의 로그인한 userName을 가지고 올 수 있게 해준다.
     Constants.myName = (await HelperFunctions.getUserNameSharedPreference())!;
-  }   //내가 해냈따 ! 본 로그인 계정의 userName을 사용했다 !!! 아싸아싸 ! 잘했다 나 자신 ..!!! ㅠㅠㅠㅠㅠㅠㅠㅠ
+  } //내가 해냈따 ! 본 로그인 계정의 userName을 사용했다 !!! 아싸아싸 ! 잘했다 나 자신 ..!!! ㅠㅠㅠㅠㅠㅠㅠㅠ
 
-  @override
-  void initState() {
-    getUserInfo();   // 초기값으로 설정을 시켜주면 searchPage에 들어가자마자 로그인 userName을 가지고 오게 할 수 있다.
-    super.initState();
-  }
-
-  // 대화방을 만든다. 당연하게 유저를 검색한 곳에서 대화하기를 누르면 대화방이 만들어 져야 하므로, searchPage에서 작성해준다.
+  // 대화방을 만든는 함수이다. 당연하게 유저를 검색한 곳에서 대화하기를 누르면 대화방이 만들어 져야 하므로, searchPage에서 작성해준다.
   createTalkRoomAndStartTalk({required String userName}) {
     if (userName != Constants.myName) {
       // 본인 계정에게 검색해서 메시지보냄을 방지하는 코드이다.
@@ -85,10 +68,23 @@ class _SearchPageState extends State<SearchPage> {
         return MessageScreen(talkroomId: talkroomId);
       }));
 
-      // Get.to(()=> MessageScreen(talkroomId));
     } else {
       print("자기자신에게는 보낼 수 없습니다.");
     }
+  }
+
+  Widget searchList() {
+    return searchSnapshot != null
+        ? ListView.builder(
+        itemCount: searchSnapshot!.docs.length,
+        // 그리고는 해당 검색한 searchSnapshot의 문서에 length를 찾아서 Count에 넣어주면 검색시 Tile의 갯수를 확인할 수 있다.
+        itemBuilder: (context, index) {
+          return SearchTile(
+            userName: searchSnapshot!.docs[index]["userName"],
+            // userName값을 searchSnapshot 입력된 값을  docs중 userName에 있는 것과 같은값을 가져온다.
+          );
+        })
+        : Container();
   }
 
 // SearchTile 은 검색결과로 나온 유저의 정보이다.
@@ -123,11 +119,17 @@ class _SearchPageState extends State<SearchPage> {
   }
 
   @override
+  void initState() {
+    getUserInfo(); // 초기값으로 설정을 시켜주면 searchPage에 들어가자마자 로그인 userName을 가지고 오게 할 수 있다.
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Column(
       // 이렇게 짜게 되면 검색버튼을 누를때만 검색결과가 나타난다.
       // 하지만 StreamBuilder를 사용하면 한자한자 누를대마다 검색 결과를 살피기때문에
-      // 검색버튼을 누르지 않고도 사용할 수 있다.
+      // 검색버튼을 누르지 않고도 사용할 수 있었다.
       children: [
         Padding(
           padding: const EdgeInsets.all(10),

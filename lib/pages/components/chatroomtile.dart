@@ -18,6 +18,8 @@ class _ChatRoomTileState extends State<ChatRoomTile> {
   DatabaseMethod databaseMethod = DatabaseMethod();
   Stream? chatRoomsLastMessage;
 
+
+// 마지막 메시지를 받을 위젯을 만들자.
   Widget LastChatMessage() {
     return StreamBuilder(
       stream: chatRoomsLastMessage,
@@ -29,9 +31,9 @@ class _ChatRoomTileState extends State<ChatRoomTile> {
     );
   }
 
-  // 시간을 받을 위젯을 만들자.
 
   getLastMessageView() {
+    // 마지막 으로 생성된 메시지 값을 받아올 것이다.
     databaseMethod.getLastMessage(widget.talkRoomId).then((value) {
       setState(() {
         chatRoomsLastMessage = value;
@@ -41,6 +43,7 @@ class _ChatRoomTileState extends State<ChatRoomTile> {
 
   @override
   void initState() {
+    //chatRoom화면이 보일시 이 함수가 실행 된다.
     getLastMessageView();
     super.initState();
   }
@@ -60,26 +63,5 @@ class _ChatRoomTileState extends State<ChatRoomTile> {
       trailing:
           SafeArea(child: LastChatTime(widget.talkRoomId)), // 최근 보낸 메시지 시간 출력하기
     );
-
-    // GestureDetector(
-    //   onTap: () {
-    //     Get.to(() => MessageScreen(
-    //         talkroomId: talkRoomId)); // 채팅방 클릭시 talkRoomId 값으로 인해 들어갈 수 있다.
-    //   },
-    //   child: Row(
-    //     children: [
-    //       Container(
-    //           height: 40,
-    //           width: 40,
-    //           decoration: BoxDecoration(
-    //               color: Colors.blue, borderRadius: BorderRadius.circular(40)),
-    //           child: Center(
-    //             child: Text("${userName.substring(0, 1)}"),
-    //           )),
-    //       SizedBox(width: 8),
-    //       Text(userName)
-    //     ],
-    //   ),
-    // );
   }
 }

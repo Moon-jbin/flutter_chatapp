@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -13,6 +12,8 @@ import '../../methods/signdata.dart';
 import '../mainpage.dart';
 import '../register.dart';
 
+
+// 로그인 화면을 나타내는 곳이다.
 class InputWrap extends StatefulWidget {
   const InputWrap({Key? key}) : super(key: key);
 

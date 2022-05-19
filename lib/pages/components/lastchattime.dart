@@ -27,6 +27,7 @@ class _LastChatTimeState extends State<LastChatTime>{
     super.initState();
   }
 
+  //마지막 메시지를 받은 시간을 받을 위젯을 만들자.
   Widget lastChatTime() {
     return StreamBuilder(
       stream: chatRoomsLastTime,
@@ -37,9 +38,6 @@ class _LastChatTimeState extends State<LastChatTime>{
       },
     );
   }
-
-
-
 
 
   @override

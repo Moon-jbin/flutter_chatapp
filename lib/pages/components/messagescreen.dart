@@ -55,10 +55,6 @@ class _MessageScreenState extends State<MessageScreen> {
         });
   }
 
-  getDateTimeFn() async {
-    // toUtc()는 국제 표준 시간대이기 때문에  add() 함수를 사용해서 한국시간대로 바꿔줘야 한다.
-  }
-
   // 이미지를 받고(get) FireStore에 저장(upload)하는 메소드를 만들 것이다.
   Future getImage() async {
     ImagePicker _picker = ImagePicker();
@@ -359,6 +355,7 @@ class MessageTile extends StatelessWidget {
   }
 }
 
+//이미지 클릭시 보여질 화면이다.
 class ShowImage extends StatelessWidget {
   final String imageUrl;
 

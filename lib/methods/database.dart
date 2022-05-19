@@ -106,12 +106,12 @@ class DatabaseMethod {
   }
 
 
-  getProfileInfo (String currentUserUid) async{
 
+  getProfileInfo (String currentUserUid) async{
     return await FirebaseFirestore.instance
         .collection("users")
         .doc(currentUserUid)
-        .snapshots();
+        .get();
   }
 
 }

@@ -1,4 +1,4 @@
-
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:messageapp/methods/database.dart';
@@ -7,6 +7,7 @@ import 'package:messageapp/pages/components/image_add.dart';
 import 'components/profileviewlist.dart';
 
 // 프로필 페이지 이다. 여기서 사진을 등록해서 보여주는 곳으로 설정한다.
+// 아직 구현은 하지 못했다.
 class ProfilePage extends StatefulWidget {
   const ProfilePage({Key? key}) : super(key: key);
 
@@ -15,39 +16,29 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-  Stream? profileView;
+  QueryDocumentSnapshot? profileView;
   DatabaseMethod databaseMethod = DatabaseMethod();
+  FirebaseAuth auth = FirebaseAuth.instance;
+  //
+  // Widget ProfileView() {
+  //   return profileView != null
+  //       ? ListView.builder(
+  //     itemCount: profileView!.,
+  //     itemBuilder: (context, index){
+  //       return ProfileViewList(
+  //         // profileView!.data()!.docs[index]["userName"].
+  //       );
+  //     },
+  //   ) : Text("없따 !");
+  // }
 
-
-
-  Widget ProfileView() {
-    return StreamBuilder(
-        stream: profileView,
-        builder: (BuildContext context, AsyncSnapshot snapshot) {
-          return snapshot.hasData
-              ? ListView.builder(
-                  itemCount: snapshot.data!.length,
-                  itemBuilder: (context, index) {
-                    return  Text("hi");
-
-                    //   ProfileViewList(
-                    //   // snapshot.data!.docs[index].data()["userName"],
-                    //   // snapshot.data!.docs[index].data()["email"],
-                    //   // snapshot.data!.docs[index].data()["img"],
-                    // );
-                  },
-                )
-              : Container();
-        });
-  }
-
+  //
   getProfileData() {
-    FirebaseAuth auth = FirebaseAuth.instance;
-    databaseMethod.getProfileInfo(auth.currentUser!.uid).then((value) {
-      setState(() {
-        profileView = value;
-        print(profileView);
-      });
+    databaseMethod.getProfileInfo(auth.currentUser!.uid).then((result) {
+        setState(() {
+          profileView = result;
+          print(profileView);
+        });
     });
   }
 
@@ -57,24 +48,31 @@ class _ProfilePageState extends State<ProfilePage> {
     super.initState();
   }
 
-
-
   @override
   Widget build(BuildContext context) {
-    return
-    Center(
+    return Center(
       child: Column(
         // kakao 처럼 프로필 사진이 가운데
         // 그 밑에 userName을 넣을 예정이다.
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Expanded(
-            child: ProfileView(),
+          Container(
+            width: 200,
+            height: 200,
+            child: GestureDetector(
+                onTap: () {
+                  // print(userInfo?["img"]);
+                },
+                child: Text("hi")
+                // ProfileView()
+                // userInfo?["img"] != null
+                // ? Image.network(userInfo?["img"], fit:BoxFit.cover)
+                // : Container()
+                ),
           )
         ],
-      ) ,
+      ),
     );
-
   }
 
   void showAlert(BuildContext context) {

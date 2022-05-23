@@ -194,7 +194,8 @@ class _RegisterInputState extends State<RegisterInput> {
           // 필드값을 넣어준다.
           'userName': _userName,
           'email': _emailValue,
-          'password': _pwValue
+          'password': _pwValue,
+          'img' : ""
         }); // 이렇게 해야지 사용자 UID 로 인해서 email 인증 로그인 과 통합된 UID를 가지므로 id를 가질 수 있다.
         // 이부분 을 구글 로그인시 컬렉션에 넣어 줘야 함.
         // 그러면 생각을 해봐야 겠다.

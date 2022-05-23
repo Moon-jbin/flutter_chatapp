@@ -16,35 +16,30 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-  QueryDocumentSnapshot? profileView;
   DatabaseMethod databaseMethod = DatabaseMethod();
   FirebaseAuth auth = FirebaseAuth.instance;
-  //
-  // Widget ProfileView() {
-  //   return profileView != null
-  //       ? ListView.builder(
-  //     itemCount: profileView!.,
-  //     itemBuilder: (context, index){
-  //       return ProfileViewList(
-  //         // profileView!.data()!.docs[index]["userName"].
-  //       );
-  //     },
-  //   ) : Text("없따 !");
-  // }
 
   //
-  getProfileData() {
-    databaseMethod.getProfileInfo(auth.currentUser!.uid).then((result) {
-        setState(() {
-          profileView = result;
-          print(profileView);
+  Widget ProfileView() {
+    return StreamBuilder(
+        stream: FirebaseFirestore.instance
+            .collection("users")
+            .doc(auth.currentUser!.uid)
+            .snapshots(),
+        builder: (BuildContext context, AsyncSnapshot snapshot) {
+          return snapshot.hasData
+              ? ProfileViewList(
+                  snapshot.data["userName"],
+                  snapshot.data["email"],
+                  snapshot.data["img"],
+                )
+              : Text("없다.");
         });
-    });
   }
 
   @override
   void initState() {
-    getProfileData();
+    // getProfileData();
     super.initState();
   }
 
@@ -61,13 +56,11 @@ class _ProfilePageState extends State<ProfilePage> {
             height: 200,
             child: GestureDetector(
                 onTap: () {
-                  // print(userInfo?["img"]);
+                  showAlert(context);
+                  // 프로필이 보여져도, 프로필을 클릭하면
+                  // 프로필 사진을 변경 할 수 있도록 alert를 설정했다.
                 },
-                child: Text("hi")
-                // ProfileView()
-                // userInfo?["img"] != null
-                // ? Image.network(userInfo?["img"], fit:BoxFit.cover)
-                // : Container()
+                child: ProfileView()
                 ),
           )
         ],
@@ -78,13 +71,14 @@ class _ProfilePageState extends State<ProfilePage> {
   void showAlert(BuildContext context) {
     // 호출시 위젯 트리에 삽입 되어야 하기 때문에 인자값으로 context 값을 전달한다.
     showDialog(
-        // flutter에서 제공하는 함수이다.
-        context: context,
-        builder: (context) {
-          return Dialog(
-            backgroundColor: Colors.white,
-            child: ImageAdd(),
-          ); // 반환되면 반투명한 창이 나온다.
-        });
+      // flutter에서 제공하는 함수이다.
+      context: context,
+      builder: (context) {
+        return Dialog(
+          backgroundColor: Colors.white,
+          child: ImageAdd(),
+        ); // 반환되면 반투명한 창이 나온다.
+      },
+    );
   }
 }

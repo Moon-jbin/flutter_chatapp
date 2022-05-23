@@ -33,7 +33,7 @@ class BottomNavController extends GetxController {
 
   List pages = [
     Center(
-      child: Text("HI")
+      child: ProfilePage()
       ),
     SearchPage(),
     // Center(child: SearchPage()),

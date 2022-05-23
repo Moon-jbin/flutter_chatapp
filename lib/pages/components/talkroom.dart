@@ -21,7 +21,8 @@ class _TalkRoomState extends State<TalkRoom> {
         stream: chatRoomsStream,
         builder: (BuildContext context, AsyncSnapshot snapshot) {
           return snapshot.hasData
-              ? ListView.builder(
+              ?
+          ListView.builder(
                   itemCount: snapshot.data!.docs.length,
                   itemBuilder: (context, index) {
                     return Card(
@@ -36,7 +37,7 @@ class _TalkRoomState extends State<TalkRoom> {
                     );
                   },
                 )
-              : Container();
+              : Text("없다.");
         });
   }
 
